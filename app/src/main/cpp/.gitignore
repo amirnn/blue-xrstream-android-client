@@ -1,0 +1,7 @@
+# platform
+.DS_Store
+
+# build
+/build/
+/out/
+/.cache/

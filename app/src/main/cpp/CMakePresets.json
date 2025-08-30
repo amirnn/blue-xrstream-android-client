@@ -1,0 +1,71 @@
+{
+  "version": 10,
+  "cmakeMinimumRequired": {
+    "major": 4,
+    "minor": 1,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base-config",
+      "displayName": "Base Configuration",
+      "description": "Common settings for all configurations.",
+      "hidden": false,
+      "generator": "Ninja Multi-Config",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "installDir": "${sourceDir}/install/${presetName}",
+      "toolchainFile": "$env{ANDROID_NDK_PATH}/build/cmake/android-legacy.toolchain.cmake",
+      "cacheVariables": {
+        // C++ standard related
+        "CMAKE_CXX_STANDARD": "23",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+        "CMAKE_CXX_EXTENSIONS": "ON",
+        // C standard related
+        "CMAKE_C_STANDARD": "17",
+        "CMAKE_C_STANDARD_REQUIRED": "ON",
+        // compile related
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        // Android specific options
+        "CMAKE_SYSTEM_NAME": "Android",
+        "ANDROID_SDK_PATH": "$env{ANDROID_SDK_PATH}",
+        "ANDROID_SDK_ROOT": "$env{ANDROID_SDK_PATH}",
+        "ANDROID_STL": "c++_static",
+        "ANDROID_PLATFORM": "34",
+        "BUILD_TOOLS": "36.0.0",
+        // Architecture specific option
+        "ANDROID_ABI": "arm64-v8a",
+        // OpenCV specific options
+        "BUILD_TESTS": "OFF",
+        "BUILD_PERF_TESTS": "OFF",
+        "BUILD_EXAMPLES": "OFF",
+        "OPENCV_TEST_DNN_TFLITE": "OFF",
+        "BUILD_ANDROID_EXAMPLES": "OFF",
+        // Libdatachannel specific options
+        "OPENSSL_CRYPTO_LIBRARY": "$env{ANDROID_SDK_PATH}/android_openssl/ssl_3/arm64-v8a/libcrypto.a",
+        "OPENSSL_SSL_LIBRARY": "$env{ANDROID_SDK_PATH}/android_openssl/ssl_3/arm64-v8a/libssl.a",
+        "OPENSSL_INCLUDE_DIR": "$env{ANDROID_SDK_PATH}/android_openssl/ssl_3/include"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "debug-android-arm64-v8a",
+      "displayName": "debug-android-arm64-v8a",
+      "configurePreset": "base-config",
+      "configuration": "Debug"
+    },
+    {
+      "name": "release-with-deb-info-android-arm64-v8a",
+      "displayName": "release-with-deb-info-android-arm64-v8a",
+      "configurePreset": "base-config",
+      "configuration": "RelWithDebInfo"
+    },
+    {
+      "name": "release-android-arm64-v8a",
+      "displayName": "release-android-arm64-v8a",
+      "$comment": "Build for Android i.e. Meta Quest 3",
+      "configurePreset": "base-config",
+      "configuration": "Release"
+    }
+  ]
+}
