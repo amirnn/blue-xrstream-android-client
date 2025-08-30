@@ -1,0 +1,9 @@
+[submodule "deps/blueopencv"]
+	path = deps/blueopencv
+	url = https://github.com/amirnn/blueopencv.git
+[submodule "deps/bluedatachannel"]
+	path = deps/bluedatachannel
+	url = https://github.com/amirnn/bluedatachannel.git
+[submodule "deps/bluexr"]
+	path = deps/bluexr
+	url = https://github.com/amirnn/bluexr.git
