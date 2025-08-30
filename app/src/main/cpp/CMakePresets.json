@@ -12,8 +12,8 @@
       "description": "Common settings for all configurations.",
       "hidden": false,
       "generator": "Ninja Multi-Config",
-      "binaryDir": "${sourceDir}/build/${presetName}",
-      "installDir": "${sourceDir}/install/${presetName}",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
       "toolchainFile": "$env{ANDROID_NDK_PATH}/build/cmake/android-legacy.toolchain.cmake",
       "cacheVariables": {
         // C++ standard related

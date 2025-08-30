@@ -19,6 +19,24 @@ android {
         ndk {
             abiFilters.addAll(listOf("x86_64", "arm64-v8a"))
         }
+        externalNativeBuild {
+            cmake {
+                val androidSdkPath = System.getenv("ANDROID_SDK_PATH")
+                arguments += listOf(
+                    "-DGRADLE_BUILD_INITITIATED=TRUE",
+                    // OpenCV specific options
+                    "-DBUILD_TESTS=OFF",
+                    "-DBUILD_PERF_TESTS=OFF",
+                    "-DBUILD_EXAMPLES=OFF",
+                    "-DOPENCV_TEST_DNN_TFLITE=OFF",
+                    "-DBUILD_ANDROID_EXAMPLE=OFF",
+                    // Libdatachannel specific options
+                    "-DOPENSSL_CRYPTO_LIBRARY=$androidSdkPath/android_openssl/ssl_3/arm64-v8a/libcrypto.a",
+                    "-DOPENSSL_SSL_LIBRARY=$androidSdkPath/android_openssl/ssl_3/arm64-v8a/libssl.a",
+                    "-DOPENSSL_INCLUDE_DIR=$androidSdkPath/android_openssl/ssl_3/include"
+                )
+            }
+        }
     }
 
     buildTypes {
