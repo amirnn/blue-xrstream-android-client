@@ -8,20 +8,42 @@ set(BLUEXR_BUILD_DIR "${CMAKE_BINARY_DIR}/deps/openxr/build")
 set(BLUEXR_INSTALL_DIR "${CMAKE_BINARY_DIR}/deps/openxr/install")
 
 ExternalProject_Add(bluexr
-        SOURCE_DIR        "${BLUEXR_SRC_DIR}"
-        BINARY_DIR        "${BLUEXR_BUILD_DIR}"
-        INSTALL_DIR       "${BLUEXR_INSTALL_DIR}"
+        SOURCE_DIR "${BLUEXR_SRC_DIR}"
+        BINARY_DIR "${BLUEXR_BUILD_DIR}"
+        INSTALL_DIR "${BLUEXR_INSTALL_DIR}"
+        # Make the external configure use the same generator (optional but nice)
+        CMAKE_GENERATOR "${CMAKE_GENERATOR}"
+        CMAKE_GENERATOR_TOOLSET "${CMAKE_GENERATOR_TOOLSET}"
+        CMAKE_GENERATOR_PLATFORM "${CMAKE_GENERATOR_PLATFORM}"
         CMAKE_ARGS
+        # Forward the toolchain file if one is in use
+        $<$<BOOL:${CMAKE_TOOLCHAIN_FILE}>:-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}>
         -DCMAKE_BUILD_TYPE=$<IF:$<CONFIG:>,$<CONFIG>,${CMAKE_BUILD_TYPE}>
-        -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+        -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
         # pass only the options you want — nothing leaks back
         # -DFOO_BUILD_TESTS:BOOL=OFF
         # -DFOO_BUILD_EXAMPLES:BOOL=OFF
-        BUILD_BYPRODUCTS  "<INSTALL_DIR>/lib/cmake/openxr/OpenXRConfig.cmake"
-        INSTALL_COMMAND   "${CMAKE_COMMAND}" --build <BINARY_DIR> --target install
+        # default configs
+        -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
+        -DCMAKE_CXX_STANDARD_REQUIRED=${CMAKE_CXX_STANDARD_REQUIRED}
+        -DCMAKE_CXX_EXTENSIONS=${CMAKE_CXX_EXTENSIONS}
+        -DCMAKE_C_STANDARD=${CMAKE_C_STANDARD}
+        -DCMAKE_C_STANDARD_REQUIRED=${CMAKE_C_STANDARD_REQUIRED}
+        -DCMAKE_EXPORT_COMPILE_COMMANDS=${CMAKE_EXPORT_COMPILE_COMMANDS}
+        -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}
+        -DANDROID_SDK_PATH=$ENV{ANDROID_SDK_PATH}
+        -DANDROID_SDK_ROOT=$ENV{ANDROID_SDK_PATH}
+        -DANDROID_STL=${ANDROID_STL}
+        -DANDROID_PLATFORM=${ANDROID_PLATFORM}
+        -DBUILD_TOOLS=${BUILD_TOOLS}
+        -DANDROID_ABI=${ANDROID_ABI}
+        -DCMAKE_OBJECT_PATH_MAX=${CMAKE_OBJECT_PATH_MAX}
+        # openxr related
+        BUILD_BYPRODUCTS "<INSTALL_DIR>/lib/cmake/openxr/OpenXRConfig.cmake"
+        INSTALL_COMMAND "${CMAKE_COMMAND}" --build <BINARY_DIR> --target install
 )
 
-unset(BLUEXR_INSTALL_DIR)
+#unset(BLUEXR_INSTALL_DIR)
 unset(BLUEXR_BUILD_DIR)
 unset(BLUEXR_SRC_DIR)
 unset(DEPENDENCIES_DIR)
