@@ -4,13 +4,13 @@
 
 set(DEPENDENCIES_DIR "${CMAKE_SOURCE_DIR}/../../../../deps")
 set(BLUEXR_SRC_DIR "${DEPENDENCIES_DIR}/bluexr")
-set(BLUEXR_BUILD_DIR "${CMAKE_BINARY_DIR}/deps/openxr-build")
-set(BLUEXR_INSTALL_DIR "${CMAKE_BINARY_DIR}/deps/openxr-install")
+set(BLUEXR_BUILD_DIR "${CMAKE_BINARY_DIR}/deps/openxr/build")
+set(BLUEXR_INSTALL_DIR "${CMAKE_BINARY_DIR}/deps/openxr/install")
 
 ExternalProject_Add(bluexr
-        SOURCE_DIR        "${BLUEOPENCV_SRC_DIR}"
-        BINARY_DIR        "${BLUEOPENCV_BUILD_DIR}"
-        INSTALL_DIR       "${BLUEOPENCV_INSTALL_DIR}"
+        SOURCE_DIR        "${BLUEXR_SRC_DIR}"
+        BINARY_DIR        "${BLUEXR_BUILD_DIR}"
+        INSTALL_DIR       "${BLUEXR_INSTALL_DIR}"
         CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=$<IF:$<CONFIG:>,$<CONFIG>,${CMAKE_BUILD_TYPE}>
         -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>

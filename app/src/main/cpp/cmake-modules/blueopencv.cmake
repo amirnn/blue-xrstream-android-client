@@ -4,8 +4,8 @@
 
 set(DEPENDENCIES_DIR "${CMAKE_SOURCE_DIR}/../../../../deps")
 set(BLUEOPENCV_SRC_DIR "${DEPENDENCIES_DIR}/blueopencv")
-set(BLUEOPENCV_BUILD_DIR "${CMAKE_BINARY_DIR}/deps/opencv-build")
-set(BLUEOPENCV_INSTALL_DIR "${CMAKE_BINARY_DIR}/deps/opencv-install")
+set(BLUEOPENCV_BUILD_DIR "${CMAKE_BINARY_DIR}/deps/opencv/build")
+set(BLUEOPENCV_INSTALL_DIR "${CMAKE_BINARY_DIR}/deps/opencv/install")
 
 ExternalProject_Add(blueopencv
         SOURCE_DIR        "${BLUEOPENCV_SRC_DIR}"

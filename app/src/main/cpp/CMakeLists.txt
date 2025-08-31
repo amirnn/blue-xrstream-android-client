@@ -23,7 +23,7 @@ else()
         set(GAME_ACTIVITY_LIB_STRING "game_activity_static")
         # Gradle will download the gameactivity itself as a preset, in independent builds from android studio I perform
         # this task myself
-        include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/gameactivity.cmake")
+        include("${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules/gameactivity.cmake")
 endif()
 
 # Creates your game shared library. The name must be the same as the one used
