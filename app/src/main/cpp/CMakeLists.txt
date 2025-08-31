@@ -9,14 +9,22 @@ project(
         VERSION 1.0.0)
 
 set(DEPENDENCIES_DIR "../../../../deps")
+
+# BlueXR
 add_subdirectory(
         ${DEPENDENCIES_DIR}/bluexr
         ${CMAKE_BINARY_DIR}/deps/bluexr-build # where to build
 )
+
+# BlueDataChannel
+set(OPENSSL_CRYPTO_LIBRARY "${ANDROID_OPENSSL_ROOT}/${ANDROID_ABI}/libcrypto.a")
+set(OPENSSL_SSL_LIBRARY    "${ANDROID_OPENSSL_ROOT}/${ANDROID_ABI}/libssl.a")
 add_subdirectory(
         ${DEPENDENCIES_DIR}/bluedatachannel
         ${CMAKE_BINARY_DIR}/deps/bluedatachannel-build # where to build
 )
+
+# BlueOpenCV
 add_subdirectory(
         ${DEPENDENCIES_DIR}/blueopencv
         ${CMAKE_BINARY_DIR}/deps/blueopencv-build # where to build
@@ -105,4 +113,9 @@ target_link_libraries(
         GLESv3
         jnigraphics
         android
-        log)
+        log
+        #
+        openxr_loader
+        ${OpenCV_LIBS}
+        datachannel
+)

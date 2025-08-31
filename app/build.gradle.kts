@@ -21,7 +21,7 @@ android {
         }
         externalNativeBuild {
             cmake {
-                val androidSdkPath = System.getenv("ANDROID_SDK_PATH")
+                val androidSdkPath = System.getenv("ANDROID_SDK_PATH").replace('\\', '/')
                 arguments += listOf(
                     "-DGRADLE_BUILD_INITITIATED=TRUE",
                     // OpenCV specific options
@@ -31,9 +31,11 @@ android {
                     "-DOPENCV_TEST_DNN_TFLITE=OFF",
                     "-DBUILD_ANDROID_EXAMPLE=OFF",
                     // Libdatachannel specific options
-                    "-DOPENSSL_CRYPTO_LIBRARY=$androidSdkPath/android_openssl/ssl_3/arm64-v8a/libcrypto.a",
-                    "-DOPENSSL_SSL_LIBRARY=$androidSdkPath/android_openssl/ssl_3/arm64-v8a/libssl.a",
-                    "-DOPENSSL_INCLUDE_DIR=$androidSdkPath/android_openssl/ssl_3/include"
+                    "-DANDROID_OPENSSL_ROOT=$androidSdkPath/android_openssl/ssl_3",
+                    "-DOPENSSL_INCLUDE_DIR=$androidSdkPath/android_openssl/ssl_3/include",
+                    "-DNO_EXAMPLES=TRUE",
+                    "-DNO_TESTS=TRUE",
+                    "-DLIBSRTP_TEST_APPS=FALSE"
                 )
             }
         }

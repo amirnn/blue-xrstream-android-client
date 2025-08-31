@@ -41,8 +41,7 @@
         "OPENCV_TEST_DNN_TFLITE": "OFF",
         "BUILD_ANDROID_EXAMPLES": "OFF",
         // Libdatachannel specific options
-        "OPENSSL_CRYPTO_LIBRARY": "$env{ANDROID_SDK_PATH}/android_openssl/ssl_3/arm64-v8a/libcrypto.a",
-        "OPENSSL_SSL_LIBRARY": "$env{ANDROID_SDK_PATH}/android_openssl/ssl_3/arm64-v8a/libssl.a",
+        "ANDROID_OPENSSL_ROOT": "$env{ANDROID_SDK_PATH}/android_openssl/ssl_3",
         "OPENSSL_INCLUDE_DIR": "$env{ANDROID_SDK_PATH}/android_openssl/ssl_3/include"
       }
     }
