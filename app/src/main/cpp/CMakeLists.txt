@@ -8,64 +8,23 @@ project(
         LANGUAGES CXX
         VERSION 1.0.0)
 
-set(DEPENDENCIES_DIR "../../../../deps")
 
-# BlueXR
-add_subdirectory(
-        ${DEPENDENCIES_DIR}/bluexr
-        ${CMAKE_BINARY_DIR}/deps/bluexr-build # where to build
-)
+include(ExternalProject)
 
-# BlueDataChannel
-set(OPENSSL_CRYPTO_LIBRARY "${ANDROID_OPENSSL_ROOT}/${ANDROID_ABI}/libcrypto.a")
-set(OPENSSL_SSL_LIBRARY    "${ANDROID_OPENSSL_ROOT}/${ANDROID_ABI}/libssl.a")
-add_subdirectory(
-        ${DEPENDENCIES_DIR}/bluedatachannel
-        ${CMAKE_BINARY_DIR}/deps/bluedatachannel-build # where to build
-)
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules/blueopencv.cmake")
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules/bluedatachannel.cmake")
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules/bluexr.cmake")
 
-# BlueOpenCV
-add_subdirectory(
-        ${DEPENDENCIES_DIR}/blueopencv
-        ${CMAKE_BINARY_DIR}/deps/blueopencv-build # where to build
-)
-
-if(${GRADLE_BUILD_INITITIATED})
-        set(GAME_ACTIVITY_STRING game-activity::game-activity)
+if(${GRADLE_BUILD})
+        set(GAME_ACTIVITY_LIB_STRING game-activity::game-activity)
         # Searches for a package provided by the game activity dependency
         find_package(game-activity REQUIRED CONFIG)
 else()
-        # ----------------------
-        # Download and unpack GameActivity AAR
-        # ----------------------
-        set(GAME_ACTIVITY_VERSION "4.0.0")
-        set(GAME_ACTIVITY_FILENAME "games-activity-${GAME_ACTIVITY_VERSION}.aar")
-        set(GAME_ACTIVITY_URL "https://dl.google.com/dl/android/maven2/androidx/games/games-activity/${GAME_ACTIVITY_VERSION}/${GAME_ACTIVITY_FILENAME}")
-        set(GAME_ACTIVITY_DOWNLOAD_DIR "${CMAKE_BINARY_DIR}/downloads")
-        set(GAME_ACTIVITY_AAR_PATH "${GAME_ACTIVITY_DOWNLOAD_DIR}/${GAME_ACTIVITY_FILENAME}")
-        file(MAKE_DIRECTORY "${GAME_ACTIVITY_DOWNLOAD_DIR}")
-        if(NOT EXISTS "${GAME_ACTIVITY_AAR_PATH}")
-                message(STATUS "Downloading GameActivity AAR...")
-                file(DOWNLOAD "${GAME_ACTIVITY_URL}" "${GAME_ACTIVITY_AAR_PATH}" SHOW_PROGRESS)
-        endif()
-        set(GAME_ACTIVITY_UNPACK_DIR "${CMAKE_BINARY_DIR}/game-activity")
-        file(MAKE_DIRECTORY "${GAME_ACTIVITY_UNPACK_DIR}")
-        file(ARCHIVE_EXTRACT INPUT "${GAME_ACTIVITY_AAR_PATH}" DESTINATION "${GAME_ACTIVITY_UNPACK_DIR}")
-
-        # ----------------------
-        # Import GameActivity native library
-        # ----------------------
-        message(STATUS "Unpack dir is: ${GAME_ACTIVITY_UNPACK_DIR}")
-        add_library(game_activity_static STATIC IMPORTED GLOBAL)
-        set_target_properties(game_activity_static PROPERTIES
-                #/prefab/modules/game-activity/libs/android.arm64-v8a/libgame-activity.a
-                IMPORTED_LOCATION "${GAME_ACTIVITY_UNPACK_DIR}/prefab/modules/game-activity_static/libs/android.${ANDROID_ABI}/libgame-activity_static.a"
-                INTERFACE_INCLUDE_DIRECTORIES "${GAME_ACTIVITY_UNPACK_DIR}/prefab/modules/game-activity_static/include"
-        )
-        set(GAME_ACTIVITY_STRING game_activity_static)
+        set(GAME_ACTIVITY_LIB_STRING "game_activity_static")
+        # Gradle will download the gameactivity itself as a preset, in independent builds from android studio I perform
+        # this task myself
+        include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/gameactivity.cmake")
 endif()
-
-
 
 # Creates your game shared library. The name must be the same as the one used
 # for loading in your Kotlin/Java or AndroidManifest.txt files.
@@ -115,7 +74,7 @@ target_link_libraries(
         android
         log
         #
-        openxr_loader
-        ${OpenCV_LIBS}
-        datachannel
+        # openxr_loader
+        # ${OpenCV_LIBS}
+        # datachannel
 )
